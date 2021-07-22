@@ -16,7 +16,15 @@ main() async {
   var aprovados = filtrar(notas, (double nota) => nota >= 7);
   print(aprovados);
 
-  var alunos = ['Pedro', 'Vitor', 'Lucas', 'Maiki'];
-  var nomeMaiorQue5Letras = filtrar(alunos, (String nome) => nome.length >= 5);
+  var alunos = [
+    'Pedro',
+    'Vitor',
+    'Lucas',
+    'Maiki',
+    'Isabela',
+    'Juliana',
+    'Luciane'
+  ];
+  var nomeMaiorQue5Letras = filtrar(alunos, (String nome) => nome.length <= 5);
   print(nomeMaiorQue5Letras);
 }
