@@ -5,7 +5,9 @@ class Venda {
   late Cliente cliente;
   late List<ItemVenda> items;
 
-  Venda(this.cliente, {this.items = const []});
+  Venda({required this.cliente, this.items = const []});
+
+  Venda.common(this.cliente, {this.items = const []});
 
   double get total {
     double total = items
@@ -20,10 +22,10 @@ class Venda {
         "Cliente: ${cliente.nome}, ${cliente.cpf} \nProdutos:";
     for (var item in items) {
       stringBuilder +=
-          "\n\t ${item.produto.codigo} - ${item.produto.nome} / Preço: R\$ ${item.produto.preco}, Quantidade: ${item.quantidade} = Subtotal: R\$ ${item.preco}";
+          "\n\t ${item.produto.codigo} - ${item.produto.nome} R\$ ${item.produto.preco}, Qtd: ${item.quantidade} = Subtotal: R\$ ${item.preco}";
     }
 
-    stringBuilder += "\n\t\t\t\t Total = R\$ ${this.total}";
+    stringBuilder += "\n\t\t\t\t Total = R\$ ${this.total}\n\n";
 
     return stringBuilder;
   }

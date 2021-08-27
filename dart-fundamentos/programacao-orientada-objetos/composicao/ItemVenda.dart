@@ -5,7 +5,9 @@ class ItemVenda {
   late double _preco;
   late Produto produto;
 
-  ItemVenda(this.produto, {this.quantidade = 1});
+  ItemVenda({required this.produto, this.quantidade = 1});
+
+  ItemVenda.common(this.produto, {this.quantidade = 1});
 
   double get preco {
     this._preco = produto.precoComDesconto * this.quantidade;
