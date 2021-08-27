@@ -1,25 +1,44 @@
 class Carro {
+  //Atributos
   late int velocidadeMaxima;
-  late int velocidadeAtual;
+  late int _velocidadeAtual = 0; // privat
 
+//Construtores
   Carro(int velocidadeMaxima) {
     this.velocidadeMaxima = velocidadeMaxima;
-    this.velocidadeAtual = 0;
   }
 
+  Carro.ctor([this.velocidadeMaxima = 200]);
+
+// Getters e Setters
+  int get velocidadeAtual {
+    return this._velocidadeAtual;
+  }
+
+  void set velocidadeAtual(int velocidade) {
+    if (_velocidadeAtual + velocidade < velocidadeMaxima && velocidade > 0) {
+      this._velocidadeAtual = velocidade;
+    }
+  }
+
+// Métodos
   int acelerar() {
-    velocidadeAtual = velocidadeAtual + 10 >= velocidadeMaxima
+    _velocidadeAtual = _velocidadeAtual + 10 >= velocidadeMaxima
         ? velocidadeMaxima
-        : velocidadeAtual + 10;
-    return velocidadeAtual;
+        : _velocidadeAtual + 10;
+    return _velocidadeAtual;
   }
 
   int frear() {
-    velocidadeAtual = velocidadeAtual - 10 <= 0 ? 0 : velocidadeAtual - 10;
-    return velocidadeAtual;
+    _velocidadeAtual = _velocidadeAtual - 10 <= 0 ? 0 : _velocidadeAtual - 10;
+    return _velocidadeAtual;
   }
 
   bool estaNoLimite() {
-    return velocidadeAtual == velocidadeMaxima;
+    return _velocidadeAtual == velocidadeMaxima;
+  }
+
+  bool estaParado() {
+    return _velocidadeAtual == 0;
   }
 }

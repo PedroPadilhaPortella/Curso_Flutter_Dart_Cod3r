@@ -13,7 +13,7 @@ class Data {
     this.ano = ano;
   }
 
-  //Construtor nomeado
+  //Construtor nomeado e com valor Padrão
   Data.com({this.dia = 1, this.mes = 1, this.ano = 1970});
 
   //Construtor nomeado Ultimo dia do ano

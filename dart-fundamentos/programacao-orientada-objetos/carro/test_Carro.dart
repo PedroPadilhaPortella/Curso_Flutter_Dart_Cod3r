@@ -1,33 +1,17 @@
 import 'Carro.dart';
 
 main(List<String> args) {
-  Carro mercedes = new Carro(120);
+  Carro mercedes = new Carro.ctor(125);
 
-  print("Velocidade: ${mercedes.acelerar()}");
-  print("Velocidade: ${mercedes.acelerar()}");
-  print("Velocidade: ${mercedes.acelerar()}");
-  print("Velocidade: ${mercedes.acelerar()}");
-  print("Velocidade: ${mercedes.acelerar()}");
-  print("Velocidade: ${mercedes.acelerar()}");
-  print("Está no Limite?  ${mercedes.estaNoLimite()}");
-  print("Velocidade: ${mercedes.acelerar()}");
-  print("Velocidade: ${mercedes.acelerar()}");
-  print("Velocidade: ${mercedes.acelerar()}");
-  print("Velocidade: ${mercedes.acelerar()}");
-  print("Velocidade: ${mercedes.acelerar()}");
-  print("Velocidade: ${mercedes.acelerar()}");
-  print("Está no Limite?  ${mercedes.estaNoLimite()}");
-  print("Velocidade: ${mercedes.frear()}");
-  print("Velocidade: ${mercedes.frear()}");
-  print("Velocidade: ${mercedes.frear()}");
-  print("Velocidade: ${mercedes.frear()}");
-  print("Velocidade: ${mercedes.frear()}");
-  print("Velocidade: ${mercedes.frear()}");
-  print("Velocidade: ${mercedes.frear()}");
-  print("Velocidade: ${mercedes.frear()}");
-  print("Velocidade: ${mercedes.frear()}");
-  print("Velocidade: ${mercedes.frear()}");
-  print("Velocidade: ${mercedes.frear()}");
-  print("Velocidade: ${mercedes.frear()}");
-  print("Velocidade: ${mercedes.frear()}");
+  while (!mercedes.estaNoLimite()) {
+    print(mercedes.acelerar());
+  }
+
+  // print("velocidade atual: ${mercedes.velocidadeAtual}"); // private
+  print("velocidade atual: ${mercedes.velocidadeAtual}");
+  mercedes.velocidadeAtual = 500;
+
+  while (!mercedes.estaParado()) {
+    print(mercedes.frear());
+  }
 }
