@@ -10,9 +10,8 @@ class Venda {
   Venda.common(this.cliente, {this.items = const []});
 
   double get total {
-    double total = items
-        .map((item) => item.preco * item.quantidade)
-        .reduce((total, item) => total + item);
+    double total =
+        items.map((item) => item.preco).reduce((total, item) => total + item);
 
     return total;
   }
@@ -22,7 +21,7 @@ class Venda {
         "Cliente: ${cliente.nome}, ${cliente.cpf} \nProdutos:";
     for (var item in items) {
       stringBuilder +=
-          "\n\t ${item.produto.codigo} - ${item.produto.nome} R\$ ${item.produto.preco}, Qtd: ${item.quantidade} = Subtotal: R\$ ${item.preco}";
+          "\n\t ${item.produto.codigo} - ${item.produto.nome} R\$ ${item.produto.precoComDesconto}, Qtd: ${item.quantidade} = Subtotal: R\$ ${item.preco}";
     }
 
     stringBuilder += "\n\t\t\t\t Total = R\$ ${this.total}\n\n";

@@ -25,7 +25,7 @@ main(List<String> args) {
         ItemVenda(
           quantidade: 5,
           produto: Produto(
-              codigo: 2001, nome: "Caneta Bic", preco: 5.89, desconto: 0.5),
+              codigo: 2001, nome: "Caneta Bic", preco: 5.8, desconto: 0.5),
         ),
         ItemVenda(
           quantidade: 8,
@@ -43,4 +43,5 @@ main(List<String> args) {
       ]);
 
   print(venda2);
+  print(venda2.total);
 }
