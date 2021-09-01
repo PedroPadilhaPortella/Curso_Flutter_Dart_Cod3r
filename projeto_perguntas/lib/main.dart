@@ -1,17 +1,18 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import './questao.dart';
+import './resposta.dart';
 
 main() => runApp(new PerguntaApp());
 
-class PerguntaApp extends StatelessWidget {
-  void responder() {
-    print("Pergunta respondida");
-  }
+class _PerguntaAppState extends State<PerguntaApp> {
+  var perguntaSelecionada = 0;
 
-  void Function() callback() {
-    return () {
-      print("callback da resposta");
-    };
+  void _responder() {
+    setState(() {
+      perguntaSelecionada++;
+    });
+    print(perguntaSelecionada);
   }
 
   @override
@@ -19,18 +20,27 @@ class PerguntaApp extends StatelessWidget {
     final List<String> perguntas = [
       "Qual sua cor favorita?",
       "Qual o primeiro presidente do brasil?",
+      "8^2?",
+      "Qual a linguagem de programação mais usada?",
     ];
     return MaterialApp(
         home: Scaffold(
       appBar: AppBar(title: Text("Projeto Perguntas")),
       body: Column(
         children: [
-          Text(perguntas[0]),
-          ElevatedButton(onPressed: responder, child: Text("Resposta: Azul")),
-          ElevatedButton(
-              onPressed: callback(), child: Text("Resposta: Laranja")),
+          Questao(texto: perguntas[perguntaSelecionada]),
+          Resposta(texto: "Resposta A", onSelected: _responder),
+          Resposta(texto: "Resposta B", onSelected: _responder),
+          Resposta(texto: "Resposta C", onSelected: _responder),
         ],
       ),
     ));
+  }
+}
+
+class PerguntaApp extends StatefulWidget {
+  @override
+  State<StatefulWidget> createState() {
+    return _PerguntaAppState();
   }
 }
