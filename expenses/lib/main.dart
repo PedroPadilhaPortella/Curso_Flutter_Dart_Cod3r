@@ -1,5 +1,6 @@
 import 'package:expenses/models/Transaction.dart';
 import 'package:flutter/material.dart';
+import 'package:intl/intl.dart';
 
 main() => runApp(const ExpensesApp());
 
@@ -15,6 +16,9 @@ class ExpensesApp extends StatelessWidget {
 }
 
 class MyHomePage extends StatelessWidget {
+  final titleController = TextEditingController();
+  final valueController = TextEditingController();
+
   final _transactions = [
     Transaction(id: 't1', title: 'SSD 250GB', value: 390, date: DateTime.now()),
     Transaction(
@@ -31,7 +35,6 @@ class MyHomePage extends StatelessWidget {
       ),
       body: Column(
         crossAxisAlignment: CrossAxisAlignment.stretch,
-        mainAxisAlignment: MainAxisAlignment.spaceAround,
         children: <Widget>[
           const Card(
             child: Text('Gráfico'),
@@ -48,7 +51,7 @@ class MyHomePage extends StatelessWidget {
                         decoration: BoxDecoration(
                             border: Border.all(color: Colors.purple, width: 2)),
                         child: Text(
-                          transaction.value.toString(),
+                          'R\$ ${transaction.value.toStringAsFixed(2)}',
                           style: TextStyle(
                               fontWeight: FontWeight.bold,
                               color: Colors.purple,
@@ -66,8 +69,8 @@ class MyHomePage extends StatelessWidget {
                                 fontSize: 16, fontWeight: FontWeight.bold),
                           ),
                           Text(
-                            transaction.date.toString(),
-                            style: TextStyle(color: Colors.grey),
+                            DateFormat('dd/MMM/yyyy').format(transaction.date),
+                            style: TextStyle(color: Colors.black),
                           ),
                         ],
                       ),
@@ -76,6 +79,36 @@ class MyHomePage extends StatelessWidget {
                 );
               }).toList()
             ],
+          ),
+          Card(
+            elevation: 5,
+            child: Padding(
+              padding: EdgeInsets.all(10),
+              child: Column(
+                children: <Widget>[
+                  TextField(
+                    controller: titleController,
+                    decoration: InputDecoration(labelText: 'Título'),
+                  ),
+                  TextField(
+                      controller: valueController,
+                      decoration: InputDecoration(labelText: 'Valor (R\$)')),
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.end,
+                    children: [
+                      TextButton(
+                          style: TextButton.styleFrom(
+                            primary: Colors.purple,
+                          ),
+                          // ignore: avoid_print
+                          onPressed: () => print(
+                              {titleController.text, valueController.text}),
+                          child: Text('Nova Transação')),
+                    ],
+                  )
+                ],
+              ),
+            ),
           )
         ],
       ),
