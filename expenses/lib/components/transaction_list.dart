@@ -68,7 +68,7 @@ class TransactionList extends StatelessWidget {
 
 
 /*
-Card(
+child: Card(
   child: Row(
     children: <Widget>[
       Container(
