@@ -10,10 +10,9 @@ class TransactionList extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Container(
-      height: 500,
-      child: transactions.isEmpty
-          ? Column(
+    return transactions.isEmpty
+        ? LayoutBuilder(builder: (cyx, constraints) {
+            return Column(
               children: <Widget>[
                 SizedBox(height: 30),
                 Text(
@@ -22,52 +21,62 @@ class TransactionList extends StatelessWidget {
                 ),
                 SizedBox(height: 30),
                 Container(
-                  height: 200,
+                  height: constraints.maxHeight * 0.5,
                   child: Image.asset(
                     'assets/images/waiting.png',
                     fit: BoxFit.cover,
                   ),
                 )
               ],
-            )
-          : ListView.builder(
-              itemCount: transactions.length,
-              itemBuilder: (ctx, index) {
-                final tr = transactions[index];
-                return Card(
-                  elevation: 5,
-                  margin: EdgeInsets.symmetric(vertical: 8, horizontal: 5),
-                  child: ListTile(
-                    leading: CircleAvatar(
-                      backgroundColor: Theme.of(context).colorScheme.primary,
-                      child: Padding(
-                        padding: const EdgeInsets.all(6.0),
-                        child: FittedBox(
-                          child: Text(
-                            'R\$${tr.value}',
-                            style: TextStyle(
-                              fontSize: 20,
-                              color: Colors.white,
-                            ),
+            );
+          })
+        : ListView.builder(
+            itemCount: transactions.length,
+            itemBuilder: (ctx, index) {
+              final tr = transactions[index];
+              return Card(
+                elevation: 5,
+                margin: EdgeInsets.symmetric(vertical: 8, horizontal: 5),
+                child: ListTile(
+                  leading: CircleAvatar(
+                    backgroundColor: Theme.of(context).colorScheme.primary,
+                    child: Padding(
+                      padding: const EdgeInsets.all(6.0),
+                      child: FittedBox(
+                        child: Text(
+                          'R\$${tr.value}',
+                          style: TextStyle(
+                            fontSize: 20,
+                            color: Colors.white,
                           ),
                         ),
                       ),
-                      radius: 30,
                     ),
-                    title: Text(tr.title,
-                        style: Theme.of(context).textTheme.headline6),
-                    subtitle: Text(
-                      DateFormat('d MM y').format(tr.date),
-                    ),
-                    trailing: IconButton(
-                        onPressed: () => onRemove(tr.id),
-                        icon: Icon(Icons.delete),
-                        color: Theme.of(context).errorColor),
+                    radius: 30,
                   ),
-                );
-              },
-            ),
-    );
+                  title: Text(tr.title,
+                      style: Theme.of(context).textTheme.headline6),
+                  subtitle: Text(
+                    DateFormat('d MM y').format(tr.date),
+                  ),
+                  trailing: MediaQuery.of(context).size.width > 480
+                      ? TextButton.icon(
+                          onPressed: () => onRemove(tr.id),
+                          icon: Icon(Icons.delete),
+                          label: Text(
+                            'Excluir',
+                            style:
+                                TextStyle(color: Theme.of(context).errorColor),
+                          ),
+                        )
+                      : IconButton(
+                          onPressed: () => onRemove(tr.id),
+                          icon: Icon(Icons.delete),
+                          color: Theme.of(context).errorColor),
+                ),
+              );
+            },
+          );
   }
 }
 
