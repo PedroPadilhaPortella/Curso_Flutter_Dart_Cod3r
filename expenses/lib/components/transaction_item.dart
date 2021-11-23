@@ -6,7 +6,8 @@ class TransactionItem extends StatelessWidget {
   final Transaction transaction;
   final void Function(String) onRemove;
 
-  TransactionItem({required this.transaction, required this.onRemove});
+  TransactionItem(key, {required this.transaction, required this.onRemove})
+      : super(key: key);
 
   @override
   Widget build(BuildContext context) {
