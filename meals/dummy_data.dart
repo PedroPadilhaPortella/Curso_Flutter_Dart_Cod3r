@@ -2,9 +2,8 @@ import 'package:flutter/material.dart';
 
 import '../models/category.dart';
 import '../models/meal.dart';
-import '../models/enum.dart';
 
-final DUMMY_CATEGORIES = [
+const DUMMY_CATEGORIES = const [
   Category(
     id: 'c1',
     title: 'Italiano',
@@ -57,7 +56,7 @@ final DUMMY_CATEGORIES = [
   ),
 ];
 
-final DUMMY_MEALS = [
+const DUMMY_MEALS = const [
   Meal(
     id: 'm1',
     categories: ['c1', 'c2'],
