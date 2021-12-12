@@ -58,7 +58,7 @@ class MealDetailScreen extends StatelessWidget {
                               horizontal: 10, vertical: 5),
                           child: Text(meal.ingredients[i]),
                         ),
-                        color: Theme.of(context).accentColor,
+                        color: Theme.of(context).colorScheme.secondary,
                       );
                     }),
               ),
