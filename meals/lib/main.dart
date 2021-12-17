@@ -3,6 +3,7 @@ import 'package:meals/data/dummy_data.dart';
 import 'package:meals/models/settings.dart';
 import 'package:meals/screens/categories_meals_screen.dart';
 import 'package:meals/screens/meal_detail_screen.dart';
+import 'package:meals/screens/meals.dart';
 import 'package:meals/screens/settings_screen.dart';
 import 'package:meals/screens/tabs_screen.dart';
 import 'package:meals/utils/app-routes.dart';
@@ -63,7 +64,7 @@ class _MyAppState extends State<MyApp> {
               .copyWith(secondary: Colors.amber)),
       // home: CategoriesScreen(),
       routes: {
-        AppRoutes.HOME: (ctx) => TabsScreen(_favoriteMeals),
+        AppRoutes.HOME: (ctx) => TabsScreen(_favoriteMeals, _avaliableMeals),
         AppRoutes.CATEGORIES_MEALS: (ctx) =>
             CategoriesMealsScreen(meals: _avaliableMeals),
         AppRoutes.MEAL_DETAILS: (ctx) =>

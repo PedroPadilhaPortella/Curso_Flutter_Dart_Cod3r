@@ -4,11 +4,13 @@ import 'package:meals/models/meal.dart';
 
 import 'categories_screen.dart';
 import 'favorite_screen.dart';
+import 'meals.dart';
 
 class TabsScreen extends StatefulWidget {
   final List<Meal> favoriteMeals;
+  final List<Meal> allMeals;
 
-  TabsScreen(this.favoriteMeals);
+  TabsScreen(this.favoriteMeals, this.allMeals);
 
   @override
   State<TabsScreen> createState() => _TabsScreenState();
@@ -26,10 +28,12 @@ class _TabsScreenState extends State<TabsScreen> {
     _titles = [
       'Lista de Categorias',
       'Meus Favoritos',
+      'Refeições',
     ];
     _screens = [
       CategoriesScreen(),
       FavoriteScreen(widget.favoriteMeals),
+      Meals(meals: widget.allMeals),
     ];
   }
 
@@ -54,7 +58,7 @@ class _TabsScreenState extends State<TabsScreen> {
         selectedItemColor: Theme.of(context).colorScheme.secondary,
         currentIndex: _selectedScreenIndex,
         // type: BottomNavigationBarType.shifting,
-        items: [
+        items: const [
           BottomNavigationBarItem(
             icon: Icon(Icons.category),
             label: "Categorias",
@@ -63,6 +67,11 @@ class _TabsScreenState extends State<TabsScreen> {
           BottomNavigationBarItem(
             icon: Icon(Icons.star),
             label: "Favoritos",
+            // backgroundColor: Theme.of(context).colorScheme.primary,
+          ),
+          BottomNavigationBarItem(
+            icon: Icon(Icons.local_pizza),
+            label: "Refeições",
             // backgroundColor: Theme.of(context).colorScheme.primary,
           ),
         ],
