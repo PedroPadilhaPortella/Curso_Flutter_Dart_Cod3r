@@ -1,17 +1,21 @@
 import 'dart:math';
 
-import 'package:flutter/cupertino.dart';
+import 'package:flutter/material.dart';
 import 'package:shop/models/cart_item.dart';
 import 'package:shop/models/product.dart';
 
 class Cart with ChangeNotifier {
   Map<String, CartItem> _items = {};
 
-  Map<String, CartItem> get items => {..._items};
+  Map<String, CartItem> get items {
+    return {..._items};
+  }
 
-  int get itemCount => _items.length;
+  int get itemsCount {
+    return _items.length;
+  }
 
-  double get totalAmmount {
+  double get totalAmount {
     double total = 0.0;
     _items.forEach((key, cartItem) {
       total += cartItem.price * cartItem.quantity;
@@ -22,30 +26,32 @@ class Cart with ChangeNotifier {
   void addItem(Product product) {
     if (_items.containsKey(product.id)) {
       _items.update(
-          product.id,
-          (item) => CartItem(
-                id: item.id,
-                productId: item.productId,
-                name: item.name,
-                quantity: item.quantity + 1,
-                price: item.price,
-              ));
+        product.id,
+        (existingItem) => CartItem(
+          id: existingItem.id,
+          productId: existingItem.productId,
+          name: existingItem.name,
+          quantity: existingItem.quantity + 1,
+          price: existingItem.price,
+        ),
+      );
     } else {
       _items.putIfAbsent(
-          product.id,
-          () => CartItem(
-                id: Random().nextDouble().toString(),
-                productId: product.id,
-                name: product.name,
-                quantity: 1,
-                price: product.price,
-              ));
+        product.id,
+        () => CartItem(
+          id: Random().nextDouble().toString(),
+          productId: product.id,
+          name: product.name,
+          quantity: 1,
+          price: product.price,
+        ),
+      );
     }
     notifyListeners();
   }
 
-  void removeItem(CartItem item) {
-    _items.remove(item);
+  void removeItem(String productId) {
+    _items.remove(productId);
     notifyListeners();
   }
 
