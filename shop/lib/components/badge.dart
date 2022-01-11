@@ -27,14 +27,14 @@ class Badge extends StatelessWidget {
               borderRadius: BorderRadius.circular(10),
               color: color ?? Theme.of(context).accentColor,
             ),
-            constraints: BoxConstraints(
+            constraints: const BoxConstraints(
               minHeight: 16,
               minWidth: 16,
             ),
             child: Text(
               value,
               textAlign: TextAlign.center,
-              style: TextStyle(
+              style: const TextStyle(
                 fontSize: 10,
               ),
             ),
