@@ -1,7 +1,9 @@
 import 'dart:math';
 
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 import 'package:shop/models/product.dart';
+import 'package:shop/models/product_list.dart';
 
 class ProductFormPage extends StatefulWidget {
   const ProductFormPage({Key? key}) : super(key: key);
@@ -25,6 +27,25 @@ class _ProductFormPageState extends State<ProductFormPage> {
   }
 
   @override
+  void didChangeDependencies() {
+    super.didChangeDependencies();
+
+    if (_formData.isEmpty) {
+      final argument = ModalRoute.of(context)?.settings.arguments;
+
+      if (argument != null) {
+        final product = argument as Product;
+        _formData['id'] = product.id;
+        _formData['name'] = product.name;
+        _formData['description'] = product.description;
+        _formData['price'] = product.price;
+        _formData['imageUrl'] = product.imageUrl;
+        _imageUrlController.text = product.imageUrl;
+      }
+    }
+  }
+
+  @override
   void dispose() {
     super.dispose();
     _priceFocus.dispose();
@@ -43,13 +64,8 @@ class _ProductFormPageState extends State<ProductFormPage> {
     if (!isValid) return;
 
     _formKey.currentState?.save();
-    final newProduct = Product(
-      id: Random().nextDouble().toString(),
-      name: _formData['name'] as String,
-      description: _formData['description'] as String,
-      price: _formData['price'] as double,
-      imageUrl: _formData['imageUrl'] as String,
-    );
+    Provider.of<ProductList>(context, listen: false).saveProduct(_formData);
+    Navigator.of(context).pop();
   }
 
   bool isValidImageUrl(String url) {
@@ -79,6 +95,7 @@ class _ProductFormPageState extends State<ProductFormPage> {
             children: [
               TextFormField(
                 keyboardType: TextInputType.text,
+                initialValue: _formData['name']?.toString(),
                 decoration: const InputDecoration(labelText: "Nome"),
                 textInputAction: TextInputAction.next,
                 onFieldSubmitted: (_) =>
@@ -96,6 +113,7 @@ class _ProductFormPageState extends State<ProductFormPage> {
               TextFormField(
                 keyboardType:
                     const TextInputType.numberWithOptions(decimal: true),
+                initialValue: _formData['price']?.toString(),
                 decoration: const InputDecoration(labelText: "Preço"),
                 textInputAction: TextInputAction.next,
                 focusNode: _priceFocus,
@@ -113,6 +131,7 @@ class _ProductFormPageState extends State<ProductFormPage> {
               ),
               TextFormField(
                 keyboardType: TextInputType.multiline,
+                initialValue: _formData['description']?.toString(),
                 maxLines: 3,
                 decoration: const InputDecoration(labelText: "Descrição"),
                 textInputAction: TextInputAction.next,

@@ -1,5 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 import 'package:shop/models/product.dart';
+import 'package:shop/models/product_list.dart';
+import 'package:shop/utils/app_routes.dart';
 
 class ProductItem extends StatelessWidget {
   final Product product;
@@ -16,14 +19,38 @@ class ProductItem extends StatelessWidget {
         child: Row(
           children: [
             IconButton(
-              icon: Icon(Icons.edit),
+              icon: const Icon(Icons.edit),
               color: Colors.amber,
-              onPressed: () {},
+              onPressed: () => Navigator.of(context)
+                  .pushNamed(AppRoutes.PRODUCTS_FORM, arguments: product),
             ),
             IconButton(
-              icon: Icon(Icons.delete),
+              icon: const Icon(Icons.delete),
               color: Colors.red,
-              onPressed: () {},
+              // onPressed: () => Provider.of<ProductList>(context, listen: false)
+              //     .removeProduct(product),
+              onPressed: () {
+                showDialog<bool>(
+                  context: context,
+                  builder: (ctx) => AlertDialog(
+                    title: const Text('Excluir?'),
+                    content: const Text("Deseja remover o Produto?"),
+                    actions: [
+                      TextButton(
+                          onPressed: () => Navigator.of(context).pop(false),
+                          child: const Text("Não")),
+                      TextButton(
+                          onPressed: () => Navigator.of(context).pop(true),
+                          child: const Text("Sim"))
+                    ],
+                  ),
+                ).then((value) {
+                  if (value ?? false) {
+                    Provider.of<ProductList>(context, listen: false)
+                        .removeProduct(product);
+                  }
+                });
+              },
             ),
           ],
         ),
