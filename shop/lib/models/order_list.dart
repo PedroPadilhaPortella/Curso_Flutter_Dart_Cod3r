@@ -51,7 +51,8 @@ class OrderList with ChangeNotifier {
   Future<void> loadOrders() async {
     clearOrderItems();
 
-    final response = await http.get(Uri.parse('${Constants.baseUrlOrders}'));
+    final response =
+        await http.get(Uri.parse('${Constants.baseUrlOrders}.json'));
 
     if (response.body == 'null') return;
 
