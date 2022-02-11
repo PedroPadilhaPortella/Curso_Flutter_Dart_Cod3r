@@ -12,30 +12,62 @@ class OrdersPage extends StatefulWidget {
 }
 
 class _OrdersPageState extends State<OrdersPage> {
-  bool _isLoading = true;
+  // bool _isLoading = true;
 
-  @override
-  void initState() {
-    super.initState();
-    Provider.of<OrderList>(context, listen: false)
-        .loadOrders()
-        .then((value) => setState(() => _isLoading = false));
-  }
+  // @override
+  // void initState() {
+  //   super.initState();
+  //   Provider.of<OrderList>(context, listen: false)
+  //       .loadOrders()
+  //       .then((value) => setState(() => _isLoading = false));
+  // }
 
   @override
   Widget build(BuildContext context) {
-    final OrderList orders = Provider.of(context);
+    // final OrderList orders = Provider.of<OrderList>(context);
+
     return Scaffold(
       appBar: AppBar(
         title: const Text("Meus Pedidos"),
       ),
       drawer: const AppDrawer(),
-      body: _isLoading
-          ? const Center(child: CircularProgressIndicator())
-          : ListView.builder(
-              itemCount: orders.itemsCount,
-              itemBuilder: (ctx, i) => OrderItem(order: orders.items[i]),
-            ),
+      body: FutureBuilder(
+        future: Provider.of<OrderList>(context, listen: false).loadOrders(),
+        builder: (ctx, snapshot) {
+          if (snapshot.connectionState == ConnectionState.waiting) {
+            return const Center(child: CircularProgressIndicator());
+          } else if (snapshot.error != null) {
+            return Center(
+                child: Column(
+              crossAxisAlignment: CrossAxisAlignment.center,
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: const [
+                Icon(
+                  Icons.warning_amber_outlined,
+                  size: 42,
+                ),
+                Text(
+                  "Ocorreu um erro ao buscar os pedidos!",
+                  style: TextStyle(fontSize: 16),
+                )
+              ],
+            ));
+          } else {
+            return Consumer<OrderList>(
+              builder: (ctx, orders, child) => ListView.builder(
+                itemCount: orders.itemsCount,
+                itemBuilder: (ctx, i) => OrderItem(order: orders.items[i]),
+              ),
+            );
+          }
+        },
+      ),
+      // body: _isLoading
+      //     ? const Center(child: CircularProgressIndicator())
+      //     : ListView.builder(
+      //         itemCount: orders.itemsCount,
+      //         itemBuilder: (ctx, i) => OrderItem(order: orders.items[i]),
+      //       ),
     );
   }
 }
