@@ -31,21 +31,22 @@ class Product with ChangeNotifier {
       _toggleFavorite();
 
       final response = await http.patch(
-        Uri.parse('${Constants.baseUrl}/$id'),
+        Uri.parse('${Constants.baseUrlProducts}/$id.json'),
         body: jsonEncode({"isFavorite": isFavorite}),
       );
 
       if (response.statusCode >= 400) {
-        _toggleFavorite();
-        final scaffold = ScaffoldMessenger.of(context);
-        scaffold.showSnackBar(
-            const SnackBar(content: Text("Erro ao Favoritar item.")));
+        throwError(context);
       }
     } catch (_) {
-      _toggleFavorite();
-      final scaffold = ScaffoldMessenger.of(context);
-      scaffold.showSnackBar(
-          const SnackBar(content: Text("Erro ao Favoritar item.")));
+      throwError(context);
     }
+  }
+
+  void throwError(BuildContext context) {
+    _toggleFavorite();
+    final scaffold = ScaffoldMessenger.of(context);
+    scaffold
+        .showSnackBar(const SnackBar(content: Text("Erro ao Favoritar item.")));
   }
 }

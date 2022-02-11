@@ -16,7 +16,8 @@ class ProductList with ChangeNotifier {
   Future<void> loadProducts() async {
     clearListItems();
 
-    final response = await http.get(Uri.parse('${Constants.baseUrl}.json'));
+    final response =
+        await http.get(Uri.parse('${Constants.baseUrlProducts}.json'));
 
     if (response.body == 'null') return;
 
@@ -59,7 +60,7 @@ class ProductList with ChangeNotifier {
 
   Future<void> addProduct(Product product) async {
     final response = await http.post(
-      Uri.parse('${Constants.baseUrl}.json'),
+      Uri.parse('${Constants.baseUrlProducts}.json'),
       body: jsonEncode({
         "name": product.name,
         "description": product.description,
@@ -87,7 +88,7 @@ class ProductList with ChangeNotifier {
 
     if (position >= 0) {
       await http.patch(
-        Uri.parse('${Constants.baseUrl}/${product.id}.json'),
+        Uri.parse('${Constants.baseUrlProducts}/${product.id}.json'),
         body: jsonEncode({
           "name": product.name,
           "description": product.description,
@@ -112,7 +113,7 @@ class ProductList with ChangeNotifier {
       notifyListeners();
 
       final response = await http
-          .patch(Uri.parse('${Constants.baseUrl}/${product.id}.json'));
+          .patch(Uri.parse('${Constants.baseUrlProducts}/${product.id}.json'));
 
       if (response.statusCode >= 400) {
         _items.insert(position, product);
