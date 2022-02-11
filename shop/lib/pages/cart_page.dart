@@ -81,7 +81,7 @@ class _CartButtonState extends State<CartButton> {
   @override
   Widget build(BuildContext context) {
     return _isLoading
-        ? const CircularProgressIndicator()
+        ? const Center(child: CircularProgressIndicator())
         : TextButton(
             child: const Text('COMPRAR'),
             style: TextButton.styleFrom(
