@@ -2,6 +2,7 @@ import 'dart:convert';
 
 import 'package:flutter/cupertino.dart';
 import 'package:http/http.dart' as http;
+import 'package:shop/utils/exceptions/auth_exception.dart';
 
 class Auth with ChangeNotifier {
   static const _url = 'https://identitytoolkit.googleapis.com/v1/accounts:';
@@ -21,6 +22,12 @@ class Auth with ChangeNotifier {
         'returnSecureToken': true,
       }),
     );
+
+    final body = jsonDecode(response.body);
+    if (body['error'] != null) {
+      throw AuthException(key: body['error']['message']);
+    }
+
     print(jsonDecode(response.body));
   }
 
@@ -33,6 +40,12 @@ class Auth with ChangeNotifier {
         'returnSecureToken': true,
       }),
     );
+
+    final body = jsonDecode(response.body);
+    if (body['error'] != null) {
+      throw AuthException(key: body['error']['message']);
+    }
+
     print(jsonDecode(response.body));
   }
 }
