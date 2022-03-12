@@ -7,7 +7,10 @@ import 'package:shop/utils/constants.dart';
 import 'package:shop/utils/exceptions/http_exception.dart';
 
 class ProductList with ChangeNotifier {
-  final List<Product> _items = [];
+  String _token;
+  List<Product> _items = [];
+
+  ProductList(this._token, this._items);
 
   List<Product> get items => [..._items];
 
@@ -16,8 +19,8 @@ class ProductList with ChangeNotifier {
   Future<void> loadProducts() async {
     clearListItems();
 
-    final response =
-        await http.get(Uri.parse('${Constants.baseUrlProducts}.json'));
+    final response = await http
+        .get(Uri.parse('${Constants.baseUrlProducts}.json?auth=$_token'));
 
     if (response.body == 'null') return;
 

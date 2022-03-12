@@ -13,6 +13,22 @@ class Auth with ChangeNotifier {
     'signin': 'signInWithPassword'
   };
 
+  String? _token;
+  String? _email;
+  String? _uid;
+  DateTime? _espiresDate;
+
+  bool get isAuth {
+    final isValid = _espiresDate?.isAfter(DateTime.now()) ?? false;
+    return _token != null && isValid;
+  }
+
+  String? get token => isAuth ? _token : null;
+
+  String? get email => isAuth ? _email : null;
+
+  String? get uid => isAuth ? _uid : null;
+
   Future<void> register(String email, String password) async {
     final response = await http.post(
       Uri.parse("$_url${endpoints['signup']}$_key"),
@@ -24,11 +40,18 @@ class Auth with ChangeNotifier {
     );
 
     final body = jsonDecode(response.body);
+
     if (body['error'] != null) {
       throw AuthException(key: body['error']['message']);
+    } else {
+      _token = body['idToken'];
+      _email = body['email'];
+      _uid = body['uid'];
+      _espiresDate = DateTime.now().add(
+        Duration(seconds: int.parse(body['expiresIn'])),
+      );
+      notifyListeners();
     }
-
-    print(jsonDecode(response.body));
   }
 
   Future<void> login(String email, String password) async {
@@ -42,10 +65,17 @@ class Auth with ChangeNotifier {
     );
 
     final body = jsonDecode(response.body);
+
     if (body['error'] != null) {
       throw AuthException(key: body['error']['message']);
+    } else {
+      _token = body['idToken'];
+      _email = body['email'];
+      _uid = body['uid'];
+      _espiresDate = DateTime.now().add(
+        Duration(seconds: int.parse(body['expiresIn'])),
+      );
+      notifyListeners();
     }
-
-    print(jsonDecode(response.body));
   }
 }
