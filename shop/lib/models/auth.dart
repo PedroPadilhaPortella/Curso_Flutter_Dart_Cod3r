@@ -9,14 +9,11 @@ import 'package:shop/utils/exceptions/auth_exception.dart';
 class Auth with ChangeNotifier {
   static const _key = '?key=AIzaSyDOu3-UJfFY_N0BPwFtUC3UUCueG8a9nok';
 
-  static const endpoints = {
-    'signup': 'accounts:signUp',
-    'signin': 'signInWithPassword'
-  };
+  static const endpoints = {'signup': 'signUp', 'signin': 'signInWithPassword'};
 
   String? _token;
   String? _email;
-  String? _uid;
+  String? _userId;
   DateTime? _espiresDate;
 
   /// Método resposável por checar se o usuário está autenticado
@@ -31,8 +28,11 @@ class Auth with ChangeNotifier {
   /// Método resposável por retornar o email
   String? get email => isAuth ? _email : null;
 
-  /// Método resposável por retornar o uid
-  String? get uid => isAuth ? _uid : null;
+  /// Método resposável por retornar o userId
+  String? get userId {
+    print('userId $_userId');
+    return isAuth ? _userId : null;
+  }
 
   /// Método resposável por registrar um novo usuário
   Future<void> register(String email, String password) async {
@@ -46,16 +46,19 @@ class Auth with ChangeNotifier {
     );
 
     final body = jsonDecode(response.body);
+    print('Body: $body');
 
     if (body['error'] != null) {
       throw AuthException(key: body['error']['message']);
     } else {
       _token = body['idToken'];
       _email = body['email'];
-      _uid = body['uid'];
+      _userId = body['localId'];
       _espiresDate = DateTime.now().add(
         Duration(seconds: int.parse(body['expiresIn'])),
       );
+
+      print('userId $_userId');
       notifyListeners();
     }
   }
@@ -78,10 +81,12 @@ class Auth with ChangeNotifier {
     } else {
       _token = body['idToken'];
       _email = body['email'];
-      _uid = body['uid'];
+      _userId = body['localId'];
       _espiresDate = DateTime.now().add(
         Duration(seconds: int.parse(body['expiresIn'])),
       );
+
+      print('userId $_userId');
       notifyListeners();
     }
   }

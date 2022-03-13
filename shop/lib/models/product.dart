@@ -29,13 +29,17 @@ class Product with ChangeNotifier {
   }
 
   /// Método responsável por favoritar / desfavoritar determinado produto
-  Future<void> toggleFavorite(BuildContext context, String token) async {
+  Future<void> toggleFavorite(
+      BuildContext context, String token, String userId) async {
     try {
       _toggleFavorite();
+      print(userId);
+      print(id);
 
-      final response = await http.patch(
-        Uri.parse('${Constants.baseUrlProducts}/$id.json?auth=$token'),
-        body: jsonEncode({"isFavorite": isFavorite}),
+      final response = await http.put(
+        Uri.parse(
+            '${Constants.baseUrlUserFavorites}/$userId/$id.json?auth=$token'),
+        body: jsonEncode(isFavorite),
       );
 
       if (response.statusCode >= 400) {

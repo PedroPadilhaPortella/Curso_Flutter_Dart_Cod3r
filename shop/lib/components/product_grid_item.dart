@@ -13,6 +13,7 @@ class ProductGridItem extends StatelessWidget {
     final product = Provider.of<Product>(context, listen: false);
     final cart = Provider.of<Cart>(context, listen: false);
     final auth = Provider.of<Auth>(context, listen: false);
+    print(auth.userId);
 
     return ClipRRect(
       borderRadius: BorderRadius.circular(10),
@@ -34,7 +35,8 @@ class ProductGridItem extends StatelessWidget {
           leading: Consumer<Product>(
             builder: (ctx, product, _) => IconButton(
               onPressed: () {
-                product.toggleFavorite(ctx, auth.token ?? '');
+                product.toggleFavorite(
+                    ctx, auth.token ?? '', auth.userId ?? '');
               },
               icon: Icon(
                   product.isFavorite ? Icons.favorite : Icons.favorite_border),

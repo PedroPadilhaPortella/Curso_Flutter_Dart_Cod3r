@@ -9,9 +9,10 @@ import 'package:shop/utils/exceptions/http_exception.dart';
 /// Provider da Lista de Produtos
 class ProductList with ChangeNotifier {
   String _token;
+  String _userId;
   List<Product> _items = [];
 
-  ProductList(this._token, this._items);
+  ProductList([this._token = '', this._userId = '', this._items = const []]);
 
   /// Método responsável por retornar todos os pedidos
   List<Product> get items => [..._items];
@@ -30,14 +31,21 @@ class ProductList with ChangeNotifier {
 
     Map<String, dynamic> data = jsonDecode(response.body);
 
+    final favResponse = await http.get(Uri.parse(
+        '${Constants.baseUrlUserFavorites}/$_userId.json?auth=$_token'));
+
+    Map<String, dynamic> favoriteData =
+        favResponse.body == 'null' ? {} : jsonDecode(favResponse.body);
+
     data.forEach((id, product) {
+      final isFavorite = favoriteData[id] ?? false;
       _items.add(Product(
         id: id,
         name: product['name'],
         description: product['description'],
         price: product['price'],
+        isFavorite: isFavorite,
         imageUrl: product['imageUrl'],
-        isFavorite: product['isFavorite'],
       ));
     });
     notifyListeners();
@@ -76,7 +84,6 @@ class ProductList with ChangeNotifier {
         "description": product.description,
         "price": product.price,
         "imageUrl": product.imageUrl,
-        "isFavorite": product.isFavorite,
       }),
     );
 
@@ -87,7 +94,6 @@ class ProductList with ChangeNotifier {
       description: product.description,
       price: product.price,
       imageUrl: product.imageUrl,
-      isFavorite: product.isFavorite,
     ));
 
     notifyListeners();
