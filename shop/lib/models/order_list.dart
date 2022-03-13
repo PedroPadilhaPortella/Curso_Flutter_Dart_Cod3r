@@ -8,7 +8,10 @@ import 'package:shop/utils/constants.dart';
 import 'cart.dart';
 
 class OrderList with ChangeNotifier {
-  final List<Order> _items = [];
+  String _token;
+  List<Order> _items = [];
+
+  OrderList(this._token, this._items);
 
   List<Order> get items => [..._items];
 
@@ -18,7 +21,7 @@ class OrderList with ChangeNotifier {
     final date = DateTime.now();
 
     final response = await http.post(
-      Uri.parse('${Constants.baseUrlOrders}.json'),
+      Uri.parse('${Constants.baseUrlOrders}.json?auth=$_token'),
       body: jsonEncode({
         "total": cart.totalAmount,
         "date": date.toIso8601String(),
@@ -48,16 +51,17 @@ class OrderList with ChangeNotifier {
   }
 
   Future<void> loadOrders() async {
-    clearOrderItems();
+    List<Order> items = [];
+    // clearOrderItems();
 
-    final response =
-        await http.get(Uri.parse('${Constants.baseUrlOrders}.json'));
+    final response = await http
+        .get(Uri.parse('${Constants.baseUrlOrders}.json?auth=$_token'));
 
     if (response.body == 'null') return;
 
     Map<String, dynamic> data = jsonDecode(response.body);
     data.forEach((id, order) {
-      _items.add(Order(
+      items.add(Order(
         id: id,
         date: DateTime.parse(order['date']),
         total: order['total'],
@@ -72,10 +76,8 @@ class OrderList with ChangeNotifier {
             .toList(),
       ));
     });
-    notifyListeners();
-  }
 
-  void clearOrderItems() {
-    _items.clear();
+    _items = items.reversed.toList();
+    notifyListeners();
   }
 }
