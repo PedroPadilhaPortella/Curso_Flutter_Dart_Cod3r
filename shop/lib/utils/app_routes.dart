@@ -1,5 +1,6 @@
 // ignore_for_file: constant_identifier_names
 
+/// Classe de Rotas da Aplicação
 class AppRoutes {
   static const AUTH_OR_HOME = '';
   static const AUTH = '/auth';

@@ -7,6 +7,7 @@ import 'package:shop/utils/constants.dart';
 
 import 'cart.dart';
 
+/// Provider dos Pedidos
 class OrderList with ChangeNotifier {
   String _token;
   List<Order> _items = [];
@@ -15,8 +16,10 @@ class OrderList with ChangeNotifier {
 
   List<Order> get items => [..._items];
 
+  /// Método responsável por retornar a quantidade de pedidos
   int get itemsCount => _items.length;
 
+  /// Método responsável por adicionar um novo pedido
   Future<void> addOrder(Cart cart) async {
     final date = DateTime.now();
 
@@ -50,9 +53,9 @@ class OrderList with ChangeNotifier {
     notifyListeners();
   }
 
+  /// Método responsável por carregar os pedidos
   Future<void> loadOrders() async {
     List<Order> items = [];
-    // clearOrderItems();
 
     final response = await http
         .get(Uri.parse('${Constants.baseUrlOrders}.json?auth=$_token'));

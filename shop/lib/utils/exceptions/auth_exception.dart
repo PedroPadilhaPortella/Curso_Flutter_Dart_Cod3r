@@ -1,3 +1,4 @@
+/// Classe de Exceções de Autenticação
 class AuthException implements Exception {
   static const Map<String, String> errors = {
     'EMAIL_EXISTS': 'O endereço de e-mail já está sendo usado por outra conta.',

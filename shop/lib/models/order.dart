@@ -1,5 +1,6 @@
 import 'package:shop/models/cart_item.dart';
 
+/// Classe Modelo de um Pedido
 class Order {
   final String id;
   final double total;

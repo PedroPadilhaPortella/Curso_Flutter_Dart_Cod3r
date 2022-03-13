@@ -4,17 +4,21 @@ import 'package:flutter/material.dart';
 import 'package:shop/models/cart_item.dart';
 import 'package:shop/models/product.dart';
 
+/// Provider do Carrinho de Compras
 class Cart with ChangeNotifier {
   Map<String, CartItem> _items = {};
 
+  /// Método responsável por retornar os items do carrinho
   Map<String, CartItem> get items {
     return {..._items};
   }
 
+  /// Método responsável por retornar a quantidade de itens do carrinho
   int get itemsCount {
     return _items.length;
   }
 
+  /// Método responsável por retornar a soma total do carrinho
   double get totalAmount {
     double total = 0.0;
     _items.forEach((key, cartItem) {
@@ -23,6 +27,7 @@ class Cart with ChangeNotifier {
     return total;
   }
 
+  /// Método responsável por adicionar um item no carrinho
   void addItem(Product product) {
     if (_items.containsKey(product.id)) {
       _items.update(
@@ -50,11 +55,13 @@ class Cart with ChangeNotifier {
     notifyListeners();
   }
 
+  /// Método responsável por remover um item do carrinho
   void removeItem(String productId) {
     _items.remove(productId);
     notifyListeners();
   }
 
+  /// Método responsável por remover um único item do carrinho
   void removeSingleItem(String productId) {
     if (!_items.containsKey(productId)) {
       return;
@@ -77,6 +84,7 @@ class Cart with ChangeNotifier {
     notifyListeners();
   }
 
+  /// Método responsável por limpar o carrinho
   void clear() {
     _items = {};
     notifyListeners();

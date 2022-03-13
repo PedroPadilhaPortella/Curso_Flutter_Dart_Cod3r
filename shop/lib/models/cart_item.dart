@@ -1,3 +1,4 @@
+/// Classe Modelo de um Carrinho de Compras
 class CartItem {
   final String id;
   final String productId;

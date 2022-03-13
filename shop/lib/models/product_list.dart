@@ -6,16 +6,20 @@ import 'package:shop/models/product.dart';
 import 'package:shop/utils/constants.dart';
 import 'package:shop/utils/exceptions/http_exception.dart';
 
+/// Provider da Lista de Produtos
 class ProductList with ChangeNotifier {
   String _token;
   List<Product> _items = [];
 
   ProductList(this._token, this._items);
 
+  /// Método responsável por retornar todos os pedidos
   List<Product> get items => [..._items];
 
+  /// Método responsável por retornar a quantidade de pedidos
   int get itemsCount => _items.length;
 
+  /// Método responsável por carregar os pedidos
   Future<void> loadProducts() async {
     clearListItems();
 
@@ -39,10 +43,12 @@ class ProductList with ChangeNotifier {
     notifyListeners();
   }
 
+  /// Método responsável por retornar somente os produtos favoritados
   List<Product> get favoriteItems {
     return _items.where((prod) => prod.isFavorite).toList();
   }
 
+  /// Método responsável por salvar um produto
   Future<void> saveProduct(Map<String, Object> data) {
     bool hasId = data['id'] != null;
 
@@ -61,6 +67,7 @@ class ProductList with ChangeNotifier {
     }
   }
 
+  /// Método responsável por adicionar um produto
   Future<void> addProduct(Product product) async {
     final response = await http.post(
       Uri.parse('${Constants.baseUrlProducts}.json?auth=$_token'),
@@ -86,6 +93,7 @@ class ProductList with ChangeNotifier {
     notifyListeners();
   }
 
+  /// Método responsável por atualizar um produto
   Future<void> updateProduct(Product product) async {
     int position = _items.indexWhere((p) => p.id == product.id);
 
@@ -107,6 +115,7 @@ class ProductList with ChangeNotifier {
     }
   }
 
+  /// Método responsável por remover um produto
   Future<void> removeProduct(Product product) async {
     int position = _items.indexWhere((p) => p.id == product.id);
 
@@ -128,6 +137,7 @@ class ProductList with ChangeNotifier {
     }
   }
 
+  /// Método responsável por limpar a lista de produtos
   void clearListItems() {
     _items.clear();
   }

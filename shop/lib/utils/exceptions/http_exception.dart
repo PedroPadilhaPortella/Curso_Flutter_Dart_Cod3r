@@ -1,3 +1,4 @@
+/// Classe de Exceções Http
 class HttpException implements Exception {
   final String mensagem;
   final int statusCode;
