@@ -33,8 +33,6 @@ class Product with ChangeNotifier {
       BuildContext context, String token, String userId) async {
     try {
       _toggleFavorite();
-      print(userId);
-      print(id);
 
       final response = await http.put(
         Uri.parse(

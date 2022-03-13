@@ -13,7 +13,6 @@ class ProductGridItem extends StatelessWidget {
     final product = Provider.of<Product>(context, listen: false);
     final cart = Provider.of<Cart>(context, listen: false);
     final auth = Provider.of<Auth>(context, listen: false);
-    print(auth.userId);
 
     return ClipRRect(
       borderRadius: BorderRadius.circular(10),

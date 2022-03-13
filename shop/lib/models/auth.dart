@@ -30,7 +30,6 @@ class Auth with ChangeNotifier {
 
   /// Método resposável por retornar o userId
   String? get userId {
-    print('userId $_userId');
     return isAuth ? _userId : null;
   }
 
@@ -46,7 +45,6 @@ class Auth with ChangeNotifier {
     );
 
     final body = jsonDecode(response.body);
-    print('Body: $body');
 
     if (body['error'] != null) {
       throw AuthException(key: body['error']['message']);
@@ -58,7 +56,6 @@ class Auth with ChangeNotifier {
         Duration(seconds: int.parse(body['expiresIn'])),
       );
 
-      print('userId $_userId');
       notifyListeners();
     }
   }
@@ -86,8 +83,16 @@ class Auth with ChangeNotifier {
         Duration(seconds: int.parse(body['expiresIn'])),
       );
 
-      print('userId $_userId');
       notifyListeners();
     }
+  }
+
+  void logout() {
+    _token = null;
+    _email = null;
+    _userId = null;
+    _espiresDate = null;
+
+    notifyListeners();
   }
 }
