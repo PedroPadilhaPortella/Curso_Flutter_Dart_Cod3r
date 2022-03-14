@@ -62,12 +62,6 @@ class _OrdersPageState extends State<OrdersPage> {
           }
         },
       ),
-      // body: _isLoading
-      //     ? const Center(child: CircularProgressIndicator())
-      //     : ListView.builder(
-      //         itemCount: orders.itemsCount,
-      //         itemBuilder: (ctx, i) => OrderItem(order: orders.items[i]),
-      //       ),
     );
   }
 }

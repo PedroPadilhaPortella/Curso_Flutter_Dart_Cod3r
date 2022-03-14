@@ -1,7 +1,9 @@
+import 'dart:async';
 import 'dart:convert';
 
 import 'package:flutter/cupertino.dart';
 import 'package:http/http.dart' as http;
+import 'package:shop/data/store.dart';
 import 'package:shop/utils/constants.dart';
 import 'package:shop/utils/exceptions/auth_exception.dart';
 
@@ -15,6 +17,7 @@ class Auth with ChangeNotifier {
   String? _email;
   String? _userId;
   DateTime? _espiresDate;
+  Timer? _logoutTimer;
 
   /// Método resposável por checar se o usuário está autenticado
   bool get isAuth {
@@ -56,6 +59,14 @@ class Auth with ChangeNotifier {
         Duration(seconds: int.parse(body['expiresIn'])),
       );
 
+      Store.saveMap('userData', {
+        'token': _token,
+        'email': _email,
+        'userId': _userId,
+        'espiresDate': _espiresDate!.toIso8601String()
+      });
+
+      _autoLogout();
       notifyListeners();
     }
   }
@@ -83,16 +94,61 @@ class Auth with ChangeNotifier {
         Duration(seconds: int.parse(body['expiresIn'])),
       );
 
+      Store.saveMap('userData', {
+        'token': _token,
+        'email': _email,
+        'userId': _userId,
+        'espiresDate': _espiresDate!.toIso8601String()
+      });
+
+      _autoLogout();
       notifyListeners();
     }
   }
 
+  /// Método responsável por tentar realizar um auto login
+  /// buscando os dados de token da Store
+  Future<void> tryAutoLogin() async {
+    if (isAuth) return;
+
+    final userData = await Store.getMap('userData');
+    if (userData.isEmpty) return;
+
+    final espiresDate = DateTime.parse(userData['espiresDate']);
+    if (espiresDate.isBefore(DateTime.now())) return;
+
+    _token = userData['token'];
+    _email = userData['email'];
+    _userId = userData['userId'];
+    _espiresDate = espiresDate;
+
+    _autoLogout();
+    notifyListeners();
+  }
+
+  /// Método responsável por realizar o logout da aplicação,
+  /// limpando todos os dados de sessão e token
   void logout() {
     _token = null;
     _email = null;
     _userId = null;
     _espiresDate = null;
 
+    _clearLogoutTimer();
     notifyListeners();
+  }
+
+  /// Método responsável por realizar o logout da aplicação automaticamente,
+  /// baseado no tempo de expiração do firebase
+  void _autoLogout() {
+    _clearLogoutTimer();
+    final time = _espiresDate?.difference(DateTime.now()).inSeconds;
+    _logoutTimer = Timer(Duration(seconds: time ?? 0), logout);
+  }
+
+  /// Método responsável por limpar o timer de logout
+  void _clearLogoutTimer() {
+    _logoutTimer?.cancel();
+    _logoutTimer = null;
   }
 }
