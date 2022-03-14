@@ -128,12 +128,13 @@ class Auth with ChangeNotifier {
 
   /// Método responsável por realizar o logout da aplicação,
   /// limpando todos os dados de sessão e token
-  void logout() {
+  void logout() async {
     _token = null;
     _email = null;
     _userId = null;
     _espiresDate = null;
 
+    await Store.remove('userData');
     _clearLogoutTimer();
     notifyListeners();
   }
