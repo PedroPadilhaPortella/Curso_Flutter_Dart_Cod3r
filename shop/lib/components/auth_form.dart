@@ -20,7 +20,8 @@ class _AuthFormState extends State<AuthForm>
   bool _isLoading = false;
 
   AnimationController? _animationController;
-  Animation<Size>? _heightAnimation;
+  Animation<double>? _opacityAnimation;
+  Animation<Offset>? _slideAnimation;
 
   final Map<String, String> _authData = {'email': '', 'password': ''};
 
@@ -35,12 +36,13 @@ class _AuthFormState extends State<AuthForm>
       duration: const Duration(milliseconds: 300),
     );
 
-    _heightAnimation = Tween(
-      begin: const Size(double.infinity, 310),
-      end: const Size(double.infinity, 400),
-    ).animate(
-      CurvedAnimation(parent: _animationController!, curve: Curves.linear),
-    );
+    _opacityAnimation = Tween(begin: 0.0, end: 1.0).animate(
+        CurvedAnimation(parent: _animationController!, curve: Curves.linear));
+
+    _slideAnimation =
+        Tween<Offset>(begin: const Offset(0, -1.5), end: const Offset(0, 0))
+            .animate(CurvedAnimation(
+                parent: _animationController!, curve: Curves.linear));
 
     // _heightAnimation?.addListener(() => setState(() {}));
   }
@@ -111,7 +113,7 @@ class _AuthFormState extends State<AuthForm>
       elevation: 8,
       shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)),
       child: AnimatedContainer(
-        duration: Duration(milliseconds: 300),
+        duration: const Duration(milliseconds: 300),
         curve: Curves.easeIn,
         padding: const EdgeInsets.all(16.0),
         height: _isLogging() ? 310 : 400,
@@ -145,21 +147,34 @@ class _AuthFormState extends State<AuthForm>
                       : null;
                 },
               ),
-              if (_isRegister())
-                TextFormField(
-                  decoration:
-                      const InputDecoration(labelText: 'Confirm Password'),
-                  keyboardType: TextInputType.text,
-                  obscureText: true,
-                  validator: _isLogging()
-                      ? null
-                      : (_password) {
-                          final password = _password ?? '';
-                          return (password != _passwordController.text)
-                              ? "Senhas não Conferem"
-                              : null;
-                        },
+              // if (_isRegister())
+              AnimatedContainer(
+                constraints: BoxConstraints(
+                    minHeight: _isRegister() ? 60 : 0,
+                    maxHeight: _isRegister() ? 120 : 0),
+                duration: const Duration(milliseconds: 300),
+                curve: Curves.linear,
+                child: FadeTransition(
+                  opacity: _opacityAnimation!,
+                  child: SlideTransition(
+                    position: _slideAnimation!,
+                    child: TextFormField(
+                      decoration:
+                          const InputDecoration(labelText: 'Confirm Password'),
+                      keyboardType: TextInputType.text,
+                      obscureText: true,
+                      validator: _isLogging()
+                          ? null
+                          : (_password) {
+                              final password = _password ?? '';
+                              return (password != _passwordController.text)
+                                  ? "Senhas não Conferem"
+                                  : null;
+                            },
+                    ),
+                  ),
                 ),
+              ),
               const SizedBox(height: 20),
               _isLoading
                   ? const CircularProgressIndicator()
