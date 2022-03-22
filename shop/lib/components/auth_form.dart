@@ -12,16 +12,38 @@ class AuthForm extends StatefulWidget {
   State<AuthForm> createState() => _AuthFormState();
 }
 
-class _AuthFormState extends State<AuthForm> {
+class _AuthFormState extends State<AuthForm>
+    with SingleTickerProviderStateMixin {
   AuthMode _authMode = AuthMode.Login;
   final _passwordController = TextEditingController();
   final _formKey = GlobalKey<FormState>();
   bool _isLoading = false;
 
+  AnimationController? _animationController;
+  Animation<Size>? _heightAnimation;
+
   final Map<String, String> _authData = {'email': '', 'password': ''};
 
   bool _isLogging() => _authMode == AuthMode.Login;
   bool _isRegister() => _authMode == AuthMode.Register;
+
+  @override
+  void initState() {
+    super.initState();
+    _animationController = AnimationController(
+      vsync: this,
+      duration: const Duration(milliseconds: 300),
+    );
+
+    _heightAnimation = Tween(
+      begin: const Size(double.infinity, 310),
+      end: const Size(double.infinity, 400),
+    ).animate(
+      CurvedAnimation(parent: _animationController!, curve: Curves.linear),
+    );
+
+    // _heightAnimation?.addListener(() => setState(() {}));
+  }
 
   void showErrorDialog(String message) {
     showDialog(
@@ -39,8 +61,17 @@ class _AuthFormState extends State<AuthForm> {
     );
   }
 
-  void _switchAuthMode() => setState(
-      () => _authMode = _isLogging() ? AuthMode.Register : AuthMode.Login);
+  void _switchAuthMode() {
+    setState(() {
+      if (_isLogging()) {
+        _authMode = AuthMode.Register;
+        _animationController?.forward();
+      } else {
+        _authMode = AuthMode.Login;
+        _animationController?.reverse();
+      }
+    });
+  }
 
   Future<void> _submit() async {
     final isValid = _formKey.currentState?.validate() ?? false;
@@ -67,15 +98,24 @@ class _AuthFormState extends State<AuthForm> {
   }
 
   @override
+  void dispose() {
+    super.dispose();
+    _animationController?.dispose();
+  }
+
+  @override
   Widget build(BuildContext context) {
     final deviceSize = MediaQuery.of(context).size;
 
     return Card(
       elevation: 8,
       shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)),
-      child: Container(
+      child: AnimatedContainer(
+        duration: Duration(milliseconds: 300),
+        curve: Curves.easeIn,
         padding: const EdgeInsets.all(16.0),
         height: _isLogging() ? 310 : 400,
+        // height: _heightAnimation?.value.height ?? (_isLogging() ? 310 : 400),
         width: deviceSize.width * 0.75,
         child: Form(
           key: _formKey,
