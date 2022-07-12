@@ -205,21 +205,6 @@ class _MyHomePageState extends State<MyHomePage> {
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.stretch,
         children: <Widget>[
-          // if (isLandscape)
-          //   Row(
-          //     mainAxisAlignment: MainAxisAlignment.center,
-          //     children: [
-          //       Text("Exibir Gráfico"),
-          //       Switch.adaptive(
-          //           activeColor: Theme.of(context).colorScheme.secondary,
-          //           value: _showChart,
-          //           onChanged: (value) {
-          //             setState(() {
-          //               _showChart = value;
-          //             });
-          //           }),
-          //     ],
-          //   ),
           if (_showChart || !isLandscape)
             Container(
               child: Chart(_recentTransactions),
