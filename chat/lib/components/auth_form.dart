@@ -31,6 +31,7 @@ class _AuthFormState extends State<AuthForm> {
   }
 
   void _submit() {
+    // TODO deixar a seleção de imagem opcional
     final isValid = _formKey.currentState?.validate() ?? false;
     if (!isValid) return;
 
