@@ -8,38 +8,38 @@ import 'package:chat/core/services/chat/chat_service.dart';
 class ChatServiceMock implements ChatService {
   static final List<ChatMessage> _messages = [
     //Mensagens de mock
-    ChatMessage(
-      id: '1',
-      text: 'Bom dia',
-      createdAt: DateTime.now(),
-      userId: '123',
-      userName: 'Pedro',
-      userImageUrl: 'assets/images/avatar.png',
-    ),
-    ChatMessage(
-      id: '2',
-      text: 'Como estamos?',
-      createdAt: DateTime.now(),
-      userId: '124',
-      userName: 'Fernando',
-      userImageUrl: 'assets/images/avatar.png',
-    ),
-    ChatMessage(
-      id: '3',
-      text: 'O QA está tentando o projeto',
-      createdAt: DateTime.now(),
-      userId: '123',
-      userName: 'Pedro',
-      userImageUrl: 'assets/images/avatar.png',
-    ),
-    ChatMessage(
-      id: '2',
-      text: 'Beleza, qualquer novidade, me avisa.',
-      createdAt: DateTime.now(),
-      userId: '124',
-      userName: 'Fernando',
-      userImageUrl: 'assets/images/avatar.png',
-    ),
+    // ChatMessage(
+    //   id: '1',
+    //   text: 'Bom dia',
+    //   createdAt: DateTime.now(),
+    //   userId: '123',
+    //   userName: 'Pedro',
+    //   userImageUrl: 'assets/images/avatar.png',
+    // ),
+    // ChatMessage(
+    //   id: '2',
+    //   text: 'Como estamos?',
+    //   createdAt: DateTime.now(),
+    //   userId: '124',
+    //   userName: 'Fernando',
+    //   userImageUrl: 'assets/images/avatar.png',
+    // ),
+    // ChatMessage(
+    //   id: '3',
+    //   text: 'O QA está tentando o projeto',
+    //   createdAt: DateTime.now(),
+    //   userId: '123',
+    //   userName: 'Pedro',
+    //   userImageUrl: 'assets/images/avatar.png',
+    // ),
+    // ChatMessage(
+    //   id: '2',
+    //   text: 'Beleza, qualquer novidade, me avisa.',
+    //   createdAt: DateTime.now(),
+    //   userId: '124',
+    //   userName: 'Fernando',
+    //   userImageUrl: 'assets/images/avatar.png',
+    // ),
   ];
 
   static MultiStreamController<List<ChatMessage>>? _controller;
@@ -65,7 +65,7 @@ class ChatServiceMock implements ChatService {
     );
 
     _messages.add(message);
-    _controller?.add(_messages);
+    _controller?.add(_messages.reversed.toList());
     return message;
   }
 }
