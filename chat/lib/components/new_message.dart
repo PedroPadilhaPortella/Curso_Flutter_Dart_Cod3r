@@ -17,7 +17,7 @@ class _NewMessagesState extends State<NewMessages> {
     final user = AuthService().currentUser;
 
     if (user != null) {
-      await ChatService().save(_message, user);
+      final message = await ChatService().save(_message, user);
       _messageController.clear();
     }
   }
@@ -30,8 +30,12 @@ class _NewMessagesState extends State<NewMessages> {
           Expanded(
             child: TextField(
               controller: _messageController,
-              decoration:
-                  const InputDecoration(labelText: 'Enviar mensagem...'),
+              // style: TextStyle(color: Colors.grey.shade200),
+              decoration: const InputDecoration(
+                labelText: 'Enviar mensagem...',
+                filled: true,
+                fillColor: Colors.white70,
+              ),
               onChanged: (msg) {
                 setState(() => _message = msg);
               },

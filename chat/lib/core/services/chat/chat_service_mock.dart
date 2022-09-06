@@ -54,7 +54,7 @@ class ChatServiceMock implements ChatService {
   Stream<List<ChatMessage>> messagesStream() => _messagesStream;
 
   @override
-  Future<ChatMessage> save(String text, ChatUser user) async {
+  Future<ChatMessage?> save(String text, ChatUser user) async {
     final ChatMessage message = ChatMessage(
       id: Random().nextDouble().toString(),
       text: text,
