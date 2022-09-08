@@ -7,34 +7,41 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 
 class ChatServiceFirebase implements ChatService {
   @override
-  Stream<List<ChatMessage>> messagesStream() =>
-      Stream<List<ChatMessage>>.empty();
+  Stream<List<ChatMessage>> messagesStream() {
+    final storage = FirebaseFirestore.instance;
+    final snapshots = storage
+        .collection('chat')
+        .withConverter(fromFirestore: _fromFirestore, toFirestore: _toFirestore)
+        .orderBy('createdAt', descending: true)
+        .snapshots();
+
+    return snapshots.map((snapshot) {
+      return snapshot.docs.map((doc) {
+        return doc.data();
+      }).toList();
+    });
+  }
 
   @override
   Future<ChatMessage?> save(String text, ChatUser user) async {
     final storage = FirebaseFirestore.instance;
+    final message = ChatMessage(
+      id: '',
+      createdAt: DateTime.now(),
+      userId: user.id,
+      text: text,
+      userImageUrl: user.imageUrl,
+      userName: user.name,
+    );
 
-    // ChatMessage -> Map<String, dynamic>
-    final docRef = await storage.collection('chat').add({
-      'text': text,
-      'createdAt': DateTime.now().toIso8601String(),
-      'userId': user.id,
-      'userName': user.name,
-      'userImageUrl': user.imageUrl,
-    });
+    final docRef = await storage
+        .collection('chat')
+        .withConverter(fromFirestore: _fromFirestore, toFirestore: _toFirestore)
+        .add(message);
 
-    // Map<String, dynamic> -> ChatMessage
     final snapshot = await docRef.get();
     final data = snapshot.data()!;
-
-    return ChatMessage(
-      id: snapshot.id,
-      text: data['text'],
-      createdAt: DateTime.parse(data['createdAt']),
-      userId: data['userId'],
-      userName: data['userName'],
-      userImageUrl: data['userImageUrl'],
-    );
+    return data;
   }
 
   // Map<String, dynamic> => ChatMessage
