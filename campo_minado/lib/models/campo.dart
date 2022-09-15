@@ -23,7 +23,7 @@ class Campo {
   bool get resolvido {
     bool minadoMarcado = minado && marcado;
     bool seguroAberto = !minado && aberto;
-    return minadoMarcado && seguroAberto;
+    return minadoMarcado || seguroAberto;
   }
 
   int get quantidadeMinasNaVizinhanca {
@@ -67,7 +67,7 @@ class Campo {
     }
   }
 
-  void alternanMarcacao() {
+  void alternarMarcacao() {
     _marcado = !_marcado;
   }
 

@@ -19,9 +19,9 @@ class Tabuleiro {
     _sortearMinas();
   }
 
-  List<Campo> get resolvido => _campos;
+  bool get resolvido => _campos.every((campo) => campo.resolvido);
 
-  bool get campos => _campos.every((campo) => campo.resolvido);
+  List<Campo> get campos => _campos;
 
   void _criarCampos() {
     for (int l = 0; l < linhas; l++) {
