@@ -8,9 +8,9 @@ class CampoWidget extends StatelessWidget {
   final void Function(Campo) onUpdateMarkup;
 
   CampoWidget({
-    required this.campo,
-    required this.onOpen,
-    required this.onUpdateMarkup,
+    @required this.campo,
+    @required this.onOpen,
+    @required this.onUpdateMarkup,
   });
 
   Widget _getImage() {

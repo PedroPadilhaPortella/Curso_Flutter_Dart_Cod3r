@@ -1,5 +1,7 @@
 import 'dart:math';
 
+import 'package:flutter/foundation.dart';
+
 import 'campo.dart';
 import 'explosao_exception.dart';
 
@@ -10,9 +12,9 @@ class Tabuleiro {
   final List<Campo> _campos = [];
 
   Tabuleiro({
-    required this.linhas,
-    required this.colunas,
-    required this.quantidadeBombas,
+    @required this.linhas,
+    @required this.colunas,
+    @required this.quantidadeBombas,
   }) {
     _criarCampos();
     _relacionarVizinhos();

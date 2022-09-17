@@ -1,4 +1,5 @@
 import 'package:campo_minado/models/explosao_exception.dart';
+import 'package:flutter/foundation.dart';
 
 class Campo {
   final int linha;
@@ -11,8 +12,8 @@ class Campo {
   bool _explodido = false;
 
   Campo({
-    required this.linha,
-    required this.coluna,
+    @required this.linha,
+    @required this.coluna,
   });
 
   bool get minado => _minado;

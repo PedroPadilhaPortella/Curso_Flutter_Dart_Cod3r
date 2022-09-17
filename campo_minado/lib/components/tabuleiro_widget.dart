@@ -10,9 +10,9 @@ class TabuleiroWidget extends StatelessWidget {
   final void Function(Campo) onUpdateMarkup;
 
   TabuleiroWidget({
-    required this.tabuleiro,
-    required this.onOpen,
-    required this.onUpdateMarkup,
+    @required this.tabuleiro,
+    @required this.onOpen,
+    @required this.onUpdateMarkup,
   });
 
   @override

@@ -1,31 +1,36 @@
 import 'package:flutter/material.dart';
 
+import '../enums/status.dart';
+
 class ResultadoWidget extends StatelessWidget implements PreferredSizeWidget {
-  final bool venceu;
+  Status status;
   final Function onRestart;
 
-  ResultadoWidget({required this.venceu, required this.onRestart});
+  ResultadoWidget({
+    @required this.status,
+    @required this.onRestart,
+  });
 
   @override
-  Size get preferredSize => const Size.fromHeight(120);
+  Size get preferredSize => Size.fromHeight(120);
 
-  Color? _getColor() {
-    if (venceu == null)
-      return Colors.yellow;
-    else if (venceu) {
+  Color _getColor() {
+    if (status == Status.venceu) {
       return Colors.green[300];
-    } else {
+    } else if (status == Status.perdeu) {
       return Colors.red[300];
+    } else {
+      return Colors.yellow;
     }
   }
 
   IconData _getIcon() {
-    if (venceu == null)
-      return Icons.sentiment_satisfied;
-    else if (venceu) {
+    if (status == Status.venceu) {
       return Icons.sentiment_very_satisfied;
-    } else {
+    } else if (status == Status.perdeu) {
       return Icons.sentiment_very_dissatisfied;
+    } else {
+      return Icons.sentiment_satisfied;
     }
   }
 
